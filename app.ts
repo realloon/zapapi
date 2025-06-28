@@ -27,7 +27,7 @@ serve({
 
         return table
           ? responseJSON(table)
-          : responseNotFound(`Resource "${resource}" not found.`)
+          : responseNotFound(`Resource '${resource}' not found.`)
       },
 
       POST: async req => {
@@ -35,7 +35,7 @@ serve({
         const table = data.get(resource)
 
         if (!table) {
-          return responseNotFound(`Resource "${resource}" not found.`)
+          return responseNotFound(`Resource '${resource}' not found.`)
         }
 
         const body = await req.json()
@@ -63,7 +63,7 @@ serve({
         const table = data.get(resource)
 
         if (!table) {
-          return responseNotFound(`Resource "${resource}" not found.`)
+          return responseNotFound(`Resource '${resource}' not found.`)
         }
 
         const item = table.find(value => String(value.id) === id)
@@ -77,7 +77,7 @@ serve({
         const table = data.get(resource)
 
         if (!table) {
-          return responseNotFound(`Resource "${resource}" not found.`)
+          return responseNotFound(`Resource '${resource}' not found.`)
         }
 
         const item = table.find(value => String(value.id) === id)
@@ -109,7 +109,7 @@ serve({
         const table = data.get(resource)
 
         if (!table) {
-          return responseNotFound(`Resource "${resource}" not found.`)
+          return responseNotFound(`Resource '${resource}' not found.`)
         }
 
         const item = table.find(value => String(value.id) === id)
