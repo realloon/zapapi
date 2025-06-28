@@ -1,0 +1,33 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "Hello World",
+      "content": "This is a test post."
+    },
+    {
+      "id": 2,
+      "title": "Another Post",
+      "content": "This is another test post."
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "postId": 1,
+      "content": "This is a comment on the first post."
+    },
+    {
+      "id": 2,
+      "postId": 2,
+      "content": "This is a comment on the second post."
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "name": "John Doe",
+      "email": "a@e.com"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "name": "zapapi",
+  "version": "0.1.0",
+  "main": "./app.ts",
+  "scripts": {
+    "serve": "bun run ./app.ts"
+  },
+  "dependencies": {
+    "@types/bun": "^1.2.17"
+  }
+}
