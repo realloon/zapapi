@@ -1,3 +1,5 @@
+export { loadDatabase } from './loadDatabase'
+
 export function responseJSON(data: NonNullable<unknown>, status: number) {
   return new Response(JSON.stringify(data), {
     headers: { 'Content-Type': 'application/json' },

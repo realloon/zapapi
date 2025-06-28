@@ -1,19 +1,11 @@
-import { file, serve } from 'bun'
-import { responseJSON, responseNotFound } from './modules'
-
-interface Schema {
-  [key: string]: Array<{
-    id: string | number
-    [key: string]: unknown
-  }>
-}
+import { serve } from 'bun'
+import { loadDatabase, responseJSON, responseNotFound } from './modules'
 
 // Constant
 const PORT = 9000
 
 // TODO: watch for changes in db.json and update the Map accordingly
-const db: Schema = await file('db.json').json()
-const data = new Map(Object.entries(db))
+const data = await loadDatabase()
 
 serve({
   port: PORT,
