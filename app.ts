@@ -18,7 +18,7 @@ serve({
         const table = data.get(resource)
 
         return table
-          ? responseJSON(table, 200)
+          ? responseJSON(table)
           : responseNotFound(`Resource "${resource}" not found.`)
       },
 
@@ -60,7 +60,7 @@ serve({
 
         const item = table.find(value => String(value.id) === id)
         return item
-          ? responseJSON(item, 200)
+          ? responseJSON(item)
           : responseNotFound('Item not found.')
       },
 
@@ -90,10 +90,10 @@ serve({
           )
         }
 
-        const updatedItem = Object.assign(body)
+        const updatedItem = body
         table[table.indexOf(item)] = updatedItem // index is always >= 0, because we checked above
         // don't need to rewrite db.json
-        return responseJSON(updatedItem, 200)
+        return responseJSON(updatedItem)
       },
 
       DELETE: req => {
@@ -111,10 +111,7 @@ serve({
 
         table.splice(table.indexOf(item), 1) // don't need to rewrite db.json
 
-        return responseJSON(
-          { message: 'Deleted successfully', code: 204 },
-          200
-        )
+        return responseJSON({ message: 'Deleted successfully', code: 204 })
       },
     },
   },
