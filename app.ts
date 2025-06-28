@@ -4,7 +4,6 @@ import { loadDatabase, responseJSON, responseNotFound } from './modules'
 // Constant
 const PORT = 9000
 
-// TODO: watch for changes in db.json and update the Map accordingly
 const data = await loadDatabase()
 
 serve({
