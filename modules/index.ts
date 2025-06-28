@@ -1,4 +1,5 @@
-export { loadDatabase } from './loadDatabase'
+export * from './loadDatabase'
+export * from './renderPage'
 
 export function responseJSON(
   data: NonNullable<unknown>,

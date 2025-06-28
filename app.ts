@@ -1,5 +1,10 @@
 import { serve } from 'bun'
-import { loadDatabase, responseJSON, responseNotFound } from './modules'
+import {
+  loadDatabase,
+  renderPage,
+  responseJSON,
+  responseNotFound,
+} from './modules'
 
 // Constant
 const PORT = 9000
@@ -9,7 +14,10 @@ const data = await loadDatabase()
 serve({
   port: PORT,
   routes: {
-    '/': () => new Response('zap api'), // TODO: return API info html
+    '/': () =>
+      new Response(renderPage(data), {
+        headers: { 'Content-Type': 'text/html' },
+      }),
 
     '/:resource': {
       GET: req => {
@@ -111,7 +119,7 @@ serve({
 
         table.splice(table.indexOf(item), 1) // don't need to rewrite db.json
 
-        return responseJSON({ message: 'Deleted successfully', code: 204 })
+        return responseJSON({ message: 'Deleted successfully' })
       },
     },
   },
