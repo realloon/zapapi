@@ -1,6 +1,7 @@
 import { serve } from 'bun'
 import {
   loadDatabase,
+  matchByQuery,
   renderPage,
   responseJSON,
   responseNotFound,
@@ -20,13 +21,23 @@ serve({
 
     '/:resource': {
       GET: req => {
-        // TODO: support for query parameters
         const { resource } = req.params
         const table = data.get(resource)
 
-        return table
-          ? responseJSON(table)
-          : responseNotFound(`Resource '${resource}' not found.`)
+        if (!table) {
+          return responseNotFound(`Resource '${resource}' not found.`)
+        }
+
+        const url = new URL(req.url)
+        const { searchParams } = url
+
+        if (searchParams.size > 0) {
+          return responseJSON(
+            table.filter(item => matchByQuery(item, searchParams))
+          )
+        }
+
+        return responseJSON(table)
       },
 
       POST: async req => {
@@ -54,6 +65,10 @@ serve({
         table.push(newItem) // don't need to rewrite db.json
         return responseJSON(newItem, 201)
       },
+    },
+
+    '/:resource/': req => {
+      return Response.redirect(`/${req.params.resource}`, 301)
     },
 
     '/:resource/:id': {

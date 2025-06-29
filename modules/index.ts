@@ -1,5 +1,6 @@
 export * from './loadDatabase'
 export * from './renderPage'
+export * from './matchByQuery'
 
 export function responseJSON(
   data: NonNullable<unknown>,
