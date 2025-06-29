@@ -14,10 +14,9 @@ const data = await loadDatabase()
 serve({
   port: PORT,
   routes: {
-    '/': () =>
-      new Response(renderPage(data), {
-        headers: { 'Content-Type': 'text/html' },
-      }),
+    '/': new Response(renderPage(data), {
+      headers: { 'Content-Type': 'text/html' },
+    }),
 
     '/:resource': {
       GET: req => {
@@ -122,9 +121,9 @@ serve({
         return responseJSON({ message: 'Deleted successfully' })
       },
     },
-  },
 
-  fetch: () => responseNotFound(),
+    '/*': responseNotFound(),
+  },
 })
 
 console.log(`\x1b[90mzapapi on: \x1b[0m\x1b[1;32mhttp://localhost:${PORT}`)

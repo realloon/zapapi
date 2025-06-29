@@ -5,12 +5,11 @@ export function responseJSON(
   data: NonNullable<unknown>,
   status: number = 200
 ) {
-  return new Response(JSON.stringify(data), {
-    headers: { 'Content-Type': 'application/json' },
+  return Response.json(data, {
     status: status,
   })
 }
 
-export function responseNotFound(message?: string) {
-  return responseJSON({ message: message ?? 'Not Found.', code: 404 }, 404)
+export function responseNotFound(message: string = 'Not Found.') {
+  return responseJSON({ message, code: 404 }, 404)
 }
