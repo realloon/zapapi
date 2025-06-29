@@ -1,5 +1,7 @@
 import { serve } from 'bun'
+import { watch } from 'fs'
 import {
+  DATABASE,
   loadDatabase,
   matchByQuery,
   renderPage,
@@ -12,7 +14,7 @@ const PORT = 9000
 
 const data = await loadDatabase()
 
-serve({
+const server = serve({
   port: PORT,
   routes: {
     '/': new Response(renderPage(data), {
@@ -141,4 +143,25 @@ serve({
   },
 })
 
-console.log(`\x1b[90mzapapi on: \x1b[0m\x1b[1;32mhttp://localhost:${PORT}`)
+console.log(`zapapi on: \x1b[0m\x1b[1;32mhttp://localhost:${PORT}\x1b[90m`)
+
+const watcher = watch(process.cwd(), async (_, filename) => {
+  if (filename !== DATABASE) return
+
+  await loadDatabase()
+
+  server.reload({
+    routes: {
+      '/': new Response(renderPage(data), {
+        headers: { 'Content-Type': 'text/html' },
+      }),
+    },
+  })
+
+  console.log(`Reload data from ${filename}`)
+})
+
+process.on('SIGINT', () => {
+  watcher.close()
+  process.exit(0)
+})

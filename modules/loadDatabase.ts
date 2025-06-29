@@ -2,15 +2,21 @@ import { file } from 'bun'
 
 interface Schema {
   [key: string]: Array<{
-    id: string | number
     [key: string]: unknown
+    id: string | number
   }>
 }
 
-/**
- * @todo Implement a file watcher to monitor changes in db.json
- */
+export const DATABASE = 'db.json'
+
+const data = new Map<string, Schema[string]>()
+
 export async function loadDatabase() {
-  const db: Schema = await file('db.json').json()
-  return new Map(Object.entries(db))
+  const db: Schema = await file(DATABASE).json()
+
+  data.clear()
+
+  Object.entries(db).forEach(([key, value]) => data.set(key, value))
+
+  return data
 }
