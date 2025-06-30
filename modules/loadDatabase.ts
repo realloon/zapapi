@@ -3,17 +3,24 @@ import { Schema } from '../types'
 
 export const DATABASE = 'db.json'
 
+let initialized = false
 const data = new Map<string, Schema[string]>()
 
-/**
- * @todo error handle
- */
 export async function loadDatabase() {
-  const db: Schema = await file(DATABASE).json()
+  try {
+    const db: Schema = await file(DATABASE).json()
 
-  data.clear()
+    data.clear()
+    Object.entries(db).forEach(([key, value]) => data.set(key, value))
 
-  Object.entries(db).forEach(([key, value]) => data.set(key, value))
+    if (initialized) {
+      console.log(`\x1b[90mReload data from ${DATABASE}\x1b[0m`)
+    } else {
+      initialized = true
+    }
+  } catch (error) {
+    console.warn(`\x1b[31mFailed to parse JSON from ${DATABASE}\x1b[0m`)
+  }
 
   return data
 }

@@ -141,7 +141,7 @@ const server = serve({
   },
 })
 
-console.log(`zapapi on: \x1b[0m\x1b[1;32mhttp://localhost:${PORT}\x1b[90m`)
+console.log(`zapapi on: \x1b[0m\x1b[1;32mhttp://localhost:${PORT}\x1b[0m`)
 
 createWatcher(DATABASE, async () => {
   await loadDatabase()
@@ -149,6 +149,4 @@ createWatcher(DATABASE, async () => {
   server.reload({
     routes: { '/': responseIndex(data) },
   })
-
-  console.log(`Reload data from ${DATABASE}`)
 })
