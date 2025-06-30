@@ -1,16 +1,13 @@
 import { file } from 'bun'
-
-interface Schema {
-  [key: string]: Array<{
-    [key: string]: unknown
-    id: string | number
-  }>
-}
+import { Schema } from '../types'
 
 export const DATABASE = 'db.json'
 
 const data = new Map<string, Schema[string]>()
 
+/**
+ * @todo error handle
+ */
 export async function loadDatabase() {
   const db: Schema = await file(DATABASE).json()
 
