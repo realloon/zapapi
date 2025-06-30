@@ -1,4 +1,6 @@
-export function renderPage(data: Map<string, unknown[]>) {
+import { Data } from '../types'
+
+export function renderPage(data: Data) {
   return `
   <!DOCTYPE html>
   <html>
