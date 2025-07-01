@@ -1,21 +1,21 @@
 import { serve } from 'bun'
+
 import {
-  DATABASE,
+  loadConfig,
   loadDatabase,
-  matchByQuery,
+  responseIndex,
   responseJSON,
   responseNotFound,
   createWatcher,
-  responseIndex,
+  matchByQuery,
 } from './modules'
 
-// Constant
-const PORT = 9000
+const { database, port } = loadConfig()
 
-const data = await loadDatabase()
+const data = await loadDatabase(database)
 
 const server = serve({
-  port: PORT,
+  port,
   routes: {
     '/': responseIndex(data),
 
@@ -81,9 +81,7 @@ const server = serve({
         }
 
         const item = table.find(value => String(value.id) === id)
-        return item
-          ? responseJSON(item)
-          : responseNotFound('Item not found.')
+        return item ? responseJSON(item) : responseNotFound('Item not found.')
       },
 
       PUT: async req => {
@@ -104,8 +102,7 @@ const server = serve({
         if (!body.id || String(body.id) !== id) {
           return responseJSON(
             {
-              message:
-                'Request body must include an "id" matching the URL.',
+              message: 'Request body must include an "id" matching the URL.',
               code: 400,
             },
             400
@@ -141,10 +138,12 @@ const server = serve({
   },
 })
 
-console.log(`zapapi on: \x1b[0m\x1b[1;32mhttp://localhost:${PORT}\x1b[0m`)
+console.log(
+  `zapapi on: \x1b[0m\x1b[1;32mhttp://localhost:${server.port}\x1b[0m`
+)
 
-createWatcher(DATABASE, async () => {
-  await loadDatabase()
+createWatcher(database, async () => {
+  await loadDatabase(database)
 
   server.reload({
     routes: { '/': responseIndex(data) },
