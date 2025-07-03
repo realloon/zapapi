@@ -138,6 +138,8 @@ const server = serve({
 
         return responseJSON({ message: 'Deleted successfully' })
       },
+
+      OPTIONS: () => new CORSResponse(),
     },
 
     '/*': responseNotFound(),
