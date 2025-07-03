@@ -49,7 +49,7 @@ const server = serve({
         }
 
         const body = await req.json()
-        const id = body.id ?? Date.now() // TODO: use auto-increment
+        const id = body.id ?? crypto.randomUUID()
 
         // Check if item with this ID already exists
         const isExists = table.some(value => value.id == id)
@@ -64,6 +64,15 @@ const server = serve({
 
         table.push(newItem) // don't need to rewrite db.json
         return responseJSON(newItem, 201)
+      },
+
+      OPTIONS: () => {
+        const res = new Response()
+        res.headers.set('Access-Control-Allow-Origin', '*')
+        res.headers.set('Access-Control-Allow-Methods', '*')
+        res.headers.set('Access-Control-Allow-Headers', '*')
+        res.headers.set('Access-Control-Expose-Headers', '*')
+        return res
       },
     },
 
