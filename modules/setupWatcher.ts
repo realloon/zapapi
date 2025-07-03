@@ -1,6 +1,6 @@
 import { watch } from 'node:fs'
 
-export function createWatcher(target: string, callback: () => void) {
+export function setupWatcher(target: string, callback: () => void) {
   const watcher = watch(process.cwd(), (_, filename) => {
     if (filename !== target) return
     callback()

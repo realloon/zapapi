@@ -3,12 +3,12 @@ import { serve } from 'bun'
 import {
   loadConfig,
   loadDatabase,
+  CORSResponse,
   responseIndex,
   responseJSON,
   responseNotFound,
-  createWatcher,
+  setupWatcher,
   matchByQuery,
-  CORSResponse,
 } from './modules'
 
 const { database, port } = loadConfig()
@@ -107,7 +107,8 @@ const server = serve({
         if (!body.id || String(body.id) !== id) {
           return responseJSON(
             {
-              message: 'Request body must include an "id" matching the URL.',
+              message:
+                'Request body must include an "id" matching the URL.',
               code: 400,
             },
             400
@@ -147,7 +148,7 @@ console.log(
   `zapapi on: \x1b[0m\x1b[1;32mhttp://localhost:${server.port}\x1b[0m`
 )
 
-createWatcher(database, async () => {
+setupWatcher(database, async () => {
   await loadDatabase(database)
 
   server.reload({
