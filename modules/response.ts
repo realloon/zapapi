@@ -1,13 +1,21 @@
 import type { Data } from '../types'
 import { renderPage } from './'
 
-export function responseJSON(data: NonNullable<unknown>, status: number = 200) {
-  const res = Response.json(data, { status })
-  res.headers.set('Access-Control-Allow-Origin', '*')
-  res.headers.set('Access-Control-Allow-Methods', '*')
-  res.headers.set('Access-Control-Allow-Headers', '*')
-  res.headers.set('Access-Control-Expose-Headers', '*')
-  return res
+export class CORSResponse extends Response {
+  constructor() {
+    super()
+    this.headers.set('Access-Control-Allow-Origin', '*')
+    this.headers.set('Access-Control-Allow-Methods', '*')
+    this.headers.set('Access-Control-Allow-Headers', '*')
+    this.headers.set('Access-Control-Expose-Headers', '*')
+  }
+}
+
+export function responseJSON(
+  data: NonNullable<unknown>,
+  status: number = 200
+) {
+  return CORSResponse.json(data, { status })
 }
 
 export function responseNotFound(message: string = 'Not Found.') {

@@ -8,6 +8,7 @@ import {
   responseNotFound,
   createWatcher,
   matchByQuery,
+  CORSResponse,
 } from './modules'
 
 const { database, port } = loadConfig()
@@ -66,14 +67,7 @@ const server = serve({
         return responseJSON(newItem, 201)
       },
 
-      OPTIONS: () => {
-        const res = new Response()
-        res.headers.set('Access-Control-Allow-Origin', '*')
-        res.headers.set('Access-Control-Allow-Methods', '*')
-        res.headers.set('Access-Control-Allow-Headers', '*')
-        res.headers.set('Access-Control-Expose-Headers', '*')
-        return res
-      },
+      OPTIONS: () => new CORSResponse(),
     },
 
     '/:resource/': req => {
@@ -90,7 +84,9 @@ const server = serve({
         }
 
         const item = table.find(value => String(value.id) === id)
-        return item ? responseJSON(item) : responseNotFound('Item not found.')
+        return item
+          ? responseJSON(item)
+          : responseNotFound('Item not found.')
       },
 
       PUT: async req => {
